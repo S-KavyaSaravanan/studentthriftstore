@@ -44,6 +44,34 @@ public ResponseEntity<?> logOut() {
 return new ResponseEntity<Object>("LoggedOutSuccessfully", HttpStatus.OK);
 }
 
+@Override
+public ResponseEntity<?> register(@RequestBody String registerdetails) {
+System.out.println("registerdetails"+registerdetails);
+boolean response=false;
+JSONObject obj = new JSONObject(registerdetails);
+          if(null!=obj) {
+        	  String email =obj.optString("student_email");
+              String firstName =obj.optString("first_name");
+              String lastName =obj.optString("last_name");
+              String password =obj.optString("ppassword");
+              String studentAddress =obj.optString("student_address");
+              String studentPostcode =obj.optString("student_postcode");
+              StudentEntity student = new StudentEntity();
+              student.setFirstName(firstName);
+              student.setLastName(lastName);
+              student.setPassword(password);
+              student.setStudentEmail(email);
+              student.setStudentAddress(studentAddress);
+              student.setStudentPostcode(studentPostcode);
+              authService.saveStudentInfo(student);
+          }
+          
+
+if (response) {
+return new ResponseEntity<Object>("User Logged in Successfully", HttpStatus.OK);
+}
+return new ResponseEntity<Object>("Unable to Login", HttpStatus.INTERNAL_SERVER_ERROR);
+
 }
 
 }
