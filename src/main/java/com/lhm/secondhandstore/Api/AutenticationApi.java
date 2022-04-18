@@ -13,6 +13,10 @@ public interface AutenticationApi {
 "application/json" }, method = RequestMethod.POST)
 ResponseEntity<?> login(@RequestBody String loginDetails);
 
+@RequestMapping(value = "/register",  consumes="application/json", produces = {
+"application/json" }, method = RequestMethod.POST)
+ResponseEntity<?> register(@RequestBody String registerdetails);
+
 @RequestMapping(value = "/logout",  consumes="application/json", produces = {
 "application/json" }, method = RequestMethod.GET)
 ResponseEntity<?> logOut();
