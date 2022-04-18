@@ -22,4 +22,7 @@ public class AuthenticationService {
 		return false;
 	}
 
+	public void saveStudentInfo(StudentEntity student) {
+		studentRepository.save(student);
+	}
 }
