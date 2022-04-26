@@ -4,6 +4,8 @@ import Register from './Register';
 import login from './login';
 import home from './home';
 import UserProfile from './UserProfile';
+import ProductItem from './ProductItem';
+import CartItem from './CartItem';
 
 
 //HomePage
@@ -51,6 +53,27 @@ test('should compulsory display user details', () => {
   rendered.getAllByText("Student Email");
   rendered.getAllByText("Full Name");
   rendered.getAllByText("Address");
+
+});
+
+
+//FindingProducts
+test('should compulsory display uploaded items', () => {
+
+  const rendered = render(<ProductItem />);
+
+  rendered.getAllByText("Product Name");
+  rendered.getAllByText("Price");
+  rendered.getAllByText("Add to cart");
+
+});
+
+//cart
+test('should compulsory have check out option', () => {
+
+  const rendered = render(<CartItem />);
+  rendered.getAllByText("Check Out");
+ 
 
 });
 
