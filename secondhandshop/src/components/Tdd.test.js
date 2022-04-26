@@ -3,6 +3,8 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import Register from './Register';
 import login from './login';
 import home from './home';
+import UserProfile from './UserProfile';
+
 
 //HomePage
 test('should compulsory have menu titles', () => {
@@ -38,6 +40,17 @@ it('should compulsory have fields email and password and button for logging in',
   rendered.getAllByText("Password");
   rendered.getAllByText('Submit');
   
+
+});
+
+//UserProfile
+test('should compulsory display user details', () => {
+
+  const rendered = render(<UserProfile />);
+
+  rendered.getAllByText("Student Email");
+  rendered.getAllByText("Full Name");
+  rendered.getAllByText("Address");
 
 });
 
