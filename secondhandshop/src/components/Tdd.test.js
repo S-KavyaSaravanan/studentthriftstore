@@ -77,8 +77,16 @@ test('should compulsory have check out option', () => {
 
 });
 
+//payment
+test('should compulsory take card number, valid till and cvv for making the payment', () => {
 
+  const rendered = render(<Payment />);
 
+  rendered.getAllByText("Card Number");
+  rendered.getAllByText("Valid Till");
+  rendered.getAllByText("CVV");
+
+});
 
 
 
