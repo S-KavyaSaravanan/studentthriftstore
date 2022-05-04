@@ -1,109 +1,128 @@
-import { click } from '@testing-library/user-event/dist/click';
-import React, { useState } from 'react';
-import styled from 'styled-components';
-import { MaskedTextbox, Password, Button } from './controls';
-import RegisterPage from './registration';
-import { useNavigate } from "react-router-dom";
+import React, { Component } from "react";    
+import './Login.css'  
+import withContext from "../withContext";
+import axios from 'axios';
+import { Switch, Route, Link, BrowserRouter as Router } from "react-router-dom";
+class Login extends Component {    
+    constructor(props) {    
+        super(props);    
+        this.state = {    
+           student_email: '',    
+           ppassword: '',    
+           formErrors: {}    
+        };    
+   
+        this.initialState = this.state;    
+    }    
+   
+    handleFormValidation() {    
+        const { student_email,ppassword} = this.state;    
+        let formErrors = {};    
+        let formIsValid = true;    
+   
+       
+   
+        //Email    
+        if (!student_email) {    
+            formIsValid = false;    
+            formErrors["student_emailErr"] = "Email id is required.";    
+        }    
+        else if (!(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(student_email))) {    
+   
+            formIsValid = false;    
+            formErrors["student_emailErr"] = "Invalid email id.";    
+        }    
 
-export const StyledLoginPage = styled.div`
-position: absolute;
-top: calc(50% - 190px);
-left: calc(50% - 200px);
-width: 450px;
-height: 400px;
-padding: 10px;
-box-shadow: 0 5px 15px 1px rgb(0 0 0 / 7%);
-z-index: 2;
-background-color: #ffffff;
-pointer-events: all;
-`;
-
-export const StyledTitle = styled.div`
-text-align: center;
-font-size: 24px;
-margin-top: 20px;
-margin-bottom: 40px;
-`;
-
-export const StyledContent = styled.div`
-    text-align: left;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    justify-content: center;
-
-    .hp-textbox {
-        margin-bottom: 25px;
+       
+   
+        //Password
+        if(!ppassword){
+            formIsValid = false;    
+            formErrors["passwordErr"] = "Password is required.";    
+       
     }
-`;
+   
+       this.setState({ formErrors: formErrors });    
+        return formIsValid;    
+    }    
+   
+    handleChange = (e) => {    
+        const { name, value } = e.target;    
+        this.setState({ [name]: value });    
+    }    
+   
+    handleSubmit = async(e) => {    
+        e.preventDefault();    
+   
+        if (this.handleFormValidation()) {    
+        const res= await axios.post(
+             'http://localhost:8083/login',
+             JSON.stringify({ student_email:this.state.student_email,ppassword:this.state.ppassword}),
+             {
+             headers: {
+               // Overwrite Axios's automatically set Content-Type
+               'Content-Type': 'application/json'
+             }
+             }).catch((res) => {
+             return { status: 400, message: 'bad request' }
+           })
 
-export const StyledFooter = styled.div`
-    text-align: center;
-    font-size: 24px;
-    margin-top: 20px;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    justify-content: center;
-`;
-
-export const StyledModel = styled.div`
-height: 80vh;
-width: 100%;
-opacity: 0.8;
-background-color: #3B4455;
-pointer-events: none;
-`;
-
-export const LoginPage = (props) => {
-
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
-
-    const _onUsernameChange = (eventObj) => {
-        setUsername(eventObj.target.value);
-    }
-
-    const _onPasswordChange = (eventObj) => {
-        setPassword(eventObj.target.value);
-    }
-
-    const _onClick = () => {
-        if (username === 'Kavya' && password === 'Kavya@123') {
-            alert('Login successful');
-            props.onClick();
-        } else {
-            alert('Login failed');
-        }
-    }
-
-    const _onRegister = () => {
-        let navigate = useNavigate();
-            navigate.push=('/registration');
-        
-    }
-
-
-
-    return (
-        <>
-        <StyledModel>
-            <StyledLoginPage>
-                <StyledTitle>Login</StyledTitle>
-                <StyledContent>
-                    <MaskedTextbox title="Username" type="text" onChange={_onUsernameChange} />
-                    <MaskedTextbox title="Password" type="password" onChange={_onPasswordChange} />
-                </StyledContent>
-                <StyledFooter>
-                    <Button title="Submit" onClick={_onClick} />
-                    <Button title="Register" onClick={_onRegister} />
-                </StyledFooter >
-
-            </StyledLoginPage>
-        </StyledModel>
-        </>
-    );
-    
-}
+           if(res.status === 200) {
+            alert("Login successfull")
+           }
+         }  
+            this.setState(this.initialState)    
+        }    
+       
+   
+    render() {    
+   
+        const { student_emailErr,passwordErr } = this.state.formErrors;    
+   
+        return (    
+            <div className="formDiv">    
+                <h1 style={{ textAlign: "center" }} ><b>User Login </b></ h1>    
+                <div>    
+                    <form onSubmit={this.handleSubmit}>    
+                         
+                            <label  className="label" style={{ textAlign: "left",marginLeft: '180px' }}>Student Email</label>    
+                            <input type="text" name="student_email"    
+                                value={this.state.student_email}    
+                                onChange={this.handleChange}    
+                                placeholder="Your email.."    
+                                className={student_emailErr ? ' showError' : ''} />    
+                            { student_emailErr&&    
+                                <div style={{ color: "red", paddingBottom: 10 }}>{student_emailErr}</div>    
+                            }    
+                          <label  className="label" style={{ textAlign: "left",marginLeft: '180px' }}>Password</label>    
+                            <input type="text" name="ppassword"    
+                                value={this.state.ppassword}    
+                                onChange={this.handleChange}    
+                                placeholder="Your password.."    
+                                className={passwordErr ? ' showError' : ''} />    
+                            {passwordErr &&    
+                                <div style={{ color: "red", paddingBottom: 10 }}>{passwordErr}</div>    
+                            }    
+   
+                            <div className="field is-clearfix">
+                            <button
+                              className="button is-primary is-outlined is-pulled-center"
+                            >
+                              Submit
+                            </button>
+                              <div>
+                              <p>Don't have an account?  <Link to="/register" className="Link is-primary is-outlined is-pulled-center">
+                              Sign up
+                              </Link>
+                              </p>
+                              </div>
+               
+                          </div>
+                    </form>    
+                </div>    
+            </div >    
+        )    
+    }    
+}    
+   
+export default withContext(Login);
