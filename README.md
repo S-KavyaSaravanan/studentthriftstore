@@ -33,8 +33,8 @@ There are 3 versions of this app. Each version is an advanced than the previous 
 
 Contributors
 -----------------------------------
-Antonios Dimitriadis
-Godswill Enoidem
-Kavya Saravanan
-Preethi Anthony
-Sara Adibzadeh
+Antonios Dimitriadis,
+Godswill Enoidem,
+Kavya Saravanan,
+Preethi Anthony,
+Sara Adibzadeh.
