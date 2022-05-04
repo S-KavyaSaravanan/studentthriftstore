@@ -1,8 +1,8 @@
 import React, { Component } from "react";    
-import './Registration.css'   
+import './Registration.css'  
 import withContext from "../withContext";
 import axios from 'axios';
-    
+   
 class Register extends Component {    
     constructor(props) {    
         super(props);    
@@ -15,29 +15,29 @@ class Register extends Component {
             student_postcode: '',    
             formErrors: {}    
         };    
-    
+   
         this.initialState = this.state;    
     }    
-    
+   
     handleFormValidation() {    
         const { student_email, first_name,last_name,ppassword,student_address,student_postcode} = this.state;    
         let formErrors = {};    
         let formIsValid = true;    
-    
-        
-    
+   
+       
+   
         //Email    
         if (!student_email) {    
             formIsValid = false;    
             formErrors["student_emailErr"] = "Email id is required.";    
         }    
-        else if (!(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(student_email))) {    
-    
+        else if (!(/^\w+([\.-]?\w+)@\w+([\.-]?\w+)(\.\w{2,3})+$/.test(student_email))) {    
+   
             formIsValid = false;    
             formErrors["student_emailErr"] = "Invalid email id.";    
         }    
 
-        //Student name     
+        //Student name    
         if (!first_name) {    
             formIsValid = false;    
             formErrors["first_nameErr"] = "First Name is required.";    
@@ -47,64 +47,64 @@ class Register extends Component {
             formIsValid = false;    
             formErrors["last_nameErr"] = "Last Name is required.";    
         }    
-    
+   
         //Password
         if(!ppassword){
             formIsValid = false;    
             formErrors["passwordErr"] = "Password is required.";    
-        
+       
     }
-    
-    
+   
+   
         //Address    
         if (!student_address) {    
             formIsValid = false;    
             formErrors["student_addressErr"] = "Address is required.";    
-        }       
+        }      
          //PostCode    
          if (!student_postcode) {    
         formIsValid = false;    
         formErrors["student_postcodeErr"] = "PostCode is required.";    
          }  
          
-    
+   
         this.setState({ formErrors: formErrors });    
         return formIsValid;    
     }    
-    
+   
     handleChange = (e) => {    
         const { name, value } = e.target;    
         this.setState({ [name]: value });    
     }    
-    
+   
     handleSubmit = async(e) => {    
         e.preventDefault();    
-    
+   
         if (this.handleFormValidation()) {    
-        	const res= await axios.post(
-        		      'http://localhost:8083/register',
-        		      JSON.stringify({ student_email:this.state.student_email, first_name:this.state.first_name,last_name:this.state.last_name,ppassword:this.state.ppassword,student_address:this.state.student_address,student_postcode:this.state.student_postcode }),
-        		      {
-        		    	  headers: {
-        		    	    // Overwrite Axios's automatically set Content-Type
-        		    	    'Content-Type': 'application/json'
-        		    	  }
-        		      }).catch((res) => {
-        		      return { status: 400, message: 'bad request' }
-        		    })
+        const res= await axios.post(
+             'http://localhost:8083/register',
+             JSON.stringify({ student_email:this.state.student_email, first_name:this.state.first_name,last_name:this.state.last_name,ppassword:this.state.ppassword,student_address:this.state.student_address,student_postcode:this.state.student_postcode }),
+             {
+             headers: {
+               // Overwrite Axios's automatically set Content-Type
+               'Content-Type': 'application/json'
+             }
+             }).catch((res) => {
+             return { status: 400, message: 'bad request' }
+           })
 
-        		    if(res.status === 200) {
-        		     alert("Registration successfull")
-        		    } 
-        		  }   
+           if(res.status === 200) {
+            alert("Registration successfull")
+           }
+         }  
             this.setState(this.initialState)    
         }    
        
-    
+   
     render() {    
-    
+   
         const { student_emailErr, first_nameErr,last_nameErr,passwordErr,student_addressErr,student_postcodeErr } = this.state.formErrors;    
-    
+   
         return (    
             <div className="formDiv">    
                 <h1 style={{ textAlign: "center" }} ><b>Student Registration Form </b></ h1>    
@@ -120,7 +120,7 @@ class Register extends Component {
                             { student_emailErr&&    
                                 <div style={{ color: "red", paddingBottom: 10 }}>{student_emailErr}</div>    
                             }    
-    
+   
                            
                             <label className="label" style={{ textAlign: "left",marginLeft: '180px' }}>First Name</label>    
                             <input type="text" name="first_name"    
@@ -131,7 +131,7 @@ class Register extends Component {
                             {first_nameErr &&    
                                 <div style={{ color: "red", paddingBottom: 10 }}>{first_nameErr}</div>    
                             }    
-    
+   
                        
                             <label  className="label" style={{ textAlign: "left",marginLeft: '180px' }}>Last Name</label>    
                             <input type="text" name="last_name"    
@@ -142,7 +142,7 @@ class Register extends Component {
                             {last_nameErr &&    
                                 <div style={{ color: "red", paddingBottom: 10 }}>{last_nameErr}</div>    
                             }    
-    
+   
                            
                             <label  className="label" style={{ textAlign: "left",marginLeft: '180px' }}>Password</label>    
                             <input type="text" name="ppassword"    
@@ -153,7 +153,7 @@ class Register extends Component {
                             {passwordErr &&    
                                 <div style={{ color: "red", paddingBottom: 10 }}>{passwordErr}</div>    
                             }    
-    
+   
                          
                             <label  className="label" style={{ textAlign: "left",marginLeft: '180px' }}>Address</label>    
                             <input type="text" name="student_address"    
@@ -164,7 +164,7 @@ class Register extends Component {
                             {student_addressErr &&    
                                 <div style={{ color: "red", paddingBottom: 10 }}>{student_addressErr}</div>    
                             }    
-    
+   
                          
                             <label  className="label" style={{ textAlign: "left",marginLeft: '180px' }}>PostCode</label>    
                             <input type="text" name="student_postcode"    
@@ -175,15 +175,15 @@ class Register extends Component {
                             {student_postcodeErr &&    
                                 <div style={{ color: "red", paddingBottom: 10 }}>{student_postcodeErr}</div>    
                             }    
-    
-                      
-                        
+   
+                     
+                       
                          <div>
                             <button
                             className="button is-primary is-outlined is-pulled-center"
                           >
                             Register
-                          </button>   
+                          </button>  
                             </div>
                     </form>    
                 </div>    
@@ -191,5 +191,5 @@ class Register extends Component {
         )    
     }    
 }    
-    
+   
 export default withContext(Register);
