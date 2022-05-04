@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import withContext from "../withContext";
 import { MaskedTextbox, Button } from './controls';
+import { useHistory } from "react-router-dom";
 
 export const StyledPaymentPage = styled.div`
 position: absolute;
@@ -55,11 +56,12 @@ background-color: #3B4455;
 pointer-events: none;
 `;
 
-export const Payment = (props) => {
-const _onClick = () => {
-   alert('Payment successful');
-   props.onClick();
+export const Payment = () => {
+const history = useHistory();
+    const paymentNavigation = () => {
+ history.push("/success");
 }
+
 return (
 <StyledModel>
          <StyledPaymentPage>
@@ -71,9 +73,16 @@ return (
                  <MaskedTextbox title="Remarks" type="text" />
              </StyledContent>
              <StyledFooter>
-                 <Button title="Submit" onClick={_onClick} />
+             <div className="field is-clearfix">
+             <button
+               className="button is-primary is-outlined is-pulled-center" onClick={paymentNavigation}
+             >
+               Submit
+             </button>
+               </div>
              </StyledFooter >
          </StyledPaymentPage>
      </StyledModel>
  );
 }
+export default withContext(Payment);
